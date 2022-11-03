@@ -1,0 +1,7 @@
+<!--pages/notes/notes.wxml-->
+<view>this show all notes</view>
+<view wx:for="{{show_data}}" wx:key="unique" wx:for-item="item" wx:for-index="index">
+      <view class="usernotes">
+        <view>{{item}}</view>
+      </view>
+</view>

@@ -1,0 +1,81 @@
+/**index.wxss**/
+.userinfo {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  color: #aaa;
+}
+
+.userinfo-avatar {
+  overflow: hidden;
+  width: 128rpx;
+  height: 128rpx;
+  margin: 20rpx;
+  border-radius: 50%;
+}
+.usernotes {
+  height: auto;
+  border-radius: 5%;
+  border-bottom: 3rpx dashed rgb(216, 213, 213);
+  margin-left: 30rpx;
+  margin-top: 50rpx;
+  padding-bottom: 20rpx;
+  text-indent: 40rpx;
+  font-weight: lighter;
+}
+.container {
+  background-color: rgba(243, 240, 225, 0.932);
+}
+.content {
+  height: 600rpx;
+  font-weight: lighter;
+  font-style: normal;
+  display: flex;
+  flex-direction: column;
+}
+.edit {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  align-content: center;
+  margin-top: 20rpx;
+}
+.note {
+  height: 100rpx;
+  width: 700rpx;
+  border-radius: 5%;
+  background-color: rgb(233, 220, 220);
+  text-indent: 20rpx;
+  text-align: left;
+}
+
+
+.edit_menu {
+  width: 700rpx;
+  height: 60rpx;
+  margin-left: 20px;
+  margin-right: 20px;
+  margin-top: 10px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-content: center;
+}
+.edit_ele {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-content: center;
+}
+.edit_menu button {
+  font-style: oblique;
+  font-size: 12px;
+  width: auto;
+  line-height: 30px;
+  background-color: rgba(238, 223, 182, 0.637);
+  text-align:center;
+  border-radius: 20%;
+  text-align: center;
+  margin-left: 10px;
+  margin-right: 10px;
+}
