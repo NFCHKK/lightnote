@@ -1,1 +1,11 @@
 /* pages/notes/notes.wxss */
+.usernotes {
+  height: auto;
+  border-radius: 5%;
+  border-bottom: 3rpx dashed rgb(216, 213, 213);
+  margin: 50rpx 30rpx 0rpx;
+  padding-top: 20rpx;
+  text-indent: 40rpx;
+  font-weight: lighter;
+  background-color: blanchedalmond;
+}

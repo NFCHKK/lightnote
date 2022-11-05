@@ -1,29 +1,7 @@
 /**index.wxss**/
-.userinfo {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  color: #aaa;
-}
-
-.userinfo-avatar {
-  overflow: hidden;
-  width: 128rpx;
-  height: 128rpx;
-  margin: 20rpx;
-  border-radius: 50%;
-}
-.usernotes {
-  height: auto;
-  border-radius: 5%;
-  border-bottom: 3rpx dashed rgb(216, 213, 213);
-  margin-left: 30rpx;
-  margin-top: 50rpx;
-  padding-bottom: 20rpx;
-  text-indent: 40rpx;
-  font-weight: lighter;
-}
 .container {
+  min-height: 1200rpx;
+  height: fit-content;
   background-color: rgba(243, 240, 225, 0.932);
 }
 .content {
@@ -41,22 +19,24 @@
   margin-top: 20rpx;
 }
 .note {
-  height: 100rpx;
+  height: 120rpx;
   width: 700rpx;
   border-radius: 5%;
   background-color: rgb(233, 220, 220);
-  text-indent: 20rpx;
+
   text-align: left;
+  text-indent: 20rpx;
 }
 
 
 .edit_menu {
   width: 700rpx;
-  height: 60rpx;
-  margin-left: 20px;
-  margin-right: 20px;
-  margin-top: 10px;
-  display: flex;
+  height: fit-content;
+  margin: 25rpx 25rpx 25rpx 25rpx;
+  font-size: 24rpx;
+  font-style: oblique;
+
+  display: flex; 
   flex-direction: row;
   justify-content: space-between;
   align-content: center;
@@ -65,17 +45,26 @@
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  align-content: center;
 }
 .edit_menu button {
-  font-style: oblique;
-  font-size: 12px;
-  width: auto;
-  line-height: 30px;
-  background-color: rgba(238, 223, 182, 0.637);
+  width: fit-content;
+
   text-align:center;
+  background-color: rgba(238, 223, 182, 0.637);
   border-radius: 20%;
-  text-align: center;
-  margin-left: 10px;
-  margin-right: 10px;
+  margin: 0rpx 25rpx 0rpx 25rpx
+}
+
+.show_notes{
+  display: flex;
+  flex-direction: column-reverse;
+}
+.usernotes {
+  height: auto;
+  border-radius: 5%;
+  border-bottom: 3rpx dashed rgb(216, 213, 213);
+  margin: 50rpx 30rpx 0rpx 30rpx;
+  padding-bottom: 20rpx;
+  text-indent: 40rpx;
+  font-weight: lighter;
 }

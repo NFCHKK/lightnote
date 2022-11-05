@@ -1,27 +1,8 @@
 <!--index.wxml-->
 <view class="container">
-  <view class="userinfo">
-    <block wx:if="{{canIUseOpenData}}">
-      <view class="userinfo-avatar" bindtap="bindViewTap">
-        <open-data type="userAvatarUrl"></open-data>
-      </view>
-      <open-data type="userNickName"></open-data>
-    </block>
-    <block wx:elif="{{!hasUserInfo}}">
-      <button wx:if="{{canIUseGetUserProfile}}" bindtap="getUserProfile"> 获取头像昵称 </button>
-      <button wx:elif="{{canIUse}}" open-type="getUserInfo" bindgetuserinfo="getUserInfo"> 获取头像昵称 </button>
-      <view wx:else> 请使用1.4.4及以上版本基础库 </view>
-    </block>
-    <block wx:else>
-      <image bindtap="bindViewTap" class="userinfo-avatar" src="{{userInfo.avatarUrl}}" mode="cover"></image>
-      <text class="userinfo-nickname">{{userInfo.nickName}}</text>
-    </block>
-  </view>
   <view class="content">
     <view class="edit">
-    <view class = "note">
-      <editor bindinput="getUserInput" placeholder=""></editor>
-    </view>
+      <textarea  class = "note" id= "editor" bindinput="getUserInput" placeholder="Any good idea ?" value="{{input_value}}"></textarea>
     </view>
     <view class="edit_menu">
       <view class="edit_ele" id="save_id">
@@ -32,10 +13,13 @@
         <button bindtap="onAllDelete">已删</button>
       </view>
     </view>
-    <view wx:for="{{show_data}}" wx:key="unique" wx:for-item="item" wx:for-index="index">
+    <view class="show_notes">
+      <view wx:for="{{show_data}}" wx:key="unique" wx:for-item="item" wx:for-index="index">
       <view class="usernotes">
-        <view>{{item}}</view>
+        <view style="font-size: small; font-weight: lighter;text-align: right;">{{item.time}}</view>
+        <view>{{item.note}}</view>
       </view>
+    </view>
     </view>
   </view>
 </view>

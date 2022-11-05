@@ -13,6 +13,10 @@ Page({
    */
   onLoad(option) {
     console.log(option)
+    this.setData({
+    notes: [{time: "2022/10/06 15:13:28", note: "this is a test note 1"},
+    {time: "2022/10/06 15:13:28",note: "this is a test note 2"}]
+    })
   },
 
   /**

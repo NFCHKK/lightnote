@@ -7,6 +7,7 @@ Page({
     userinput: "",
     show_data: new Array(),
     store_data: new Array(),
+    input_value: "",
     save_disable: true,
     userInfo: {},
     hasUserInfo: false,
@@ -15,22 +16,26 @@ Page({
     canIUseOpenData: wx.canIUse('open-data.type.userAvatarUrl') && wx.canIUse('open-data.type.userNickName') // 如需尝试获取用户信息可改为false
   },
 
+  getlocalDate() {
+    let timeNow = new Date()
+    return timeNow.getFullYear() + "/" + timeNow.getMonth() + "/" +
+      timeNow.getDay() + " " + timeNow.getHours() + ":" + timeNow.getMinutes() + ":"
+      + timeNow.getSeconds()
+  },
+
   onAddData: function() {
-    console.log(this.data.userinput)
     if(this.data.userinput === ""){
       return
     }
-    this.data.store_data.push(this.data.userinput);
+    let noteIns = {time: this.getlocalDate(), note: this.data.userinput}
+    this.data.store_data.push(noteIns);
     this.setData({
-      show_data: [this.data.userinput],
+      show_data: this.data.store_data,
+      input_value: "",
     })
-    let notes = ""
-    for ( var i = 0; i < this.data.show_data.length; i ++) {
-      notes += this.data.show_data[i]
-      notes += ";"
-    }
-    wx.request({
-      url: 'http://localhost:8081/helloservice/savenotes',
+    //  send note json
+    /*wx.request({
+      url: 'http://127.0.0.1:8081/helloservice/savenotes',
       data : {
         "head": {
           "id": "dannyhkk",
@@ -45,7 +50,7 @@ Page({
       success(res) {
         console.log(res.data)
       }
-    })
+    })*/
   },
   // 事件处理函数
   bindViewTap() {
@@ -60,7 +65,7 @@ Page({
   },
   onAllDelete() {
     wx.navigateTo({
-      url: '../trash/trash',
+      url: '../notes/notes',
       events: this.data.store_data,
     })
   },
@@ -87,24 +92,21 @@ Page({
   },
   getUserInfo(e: any) {
     // 不推荐使用getUserInfo获取用户信息，预计自2021年4月13日起，getUserInfo将不再弹出弹窗，并直接返回匿名的用户个人信息
-    console.log(e)
     this.setData({
       userInfo: e.detail.userInfo,
       hasUserInfo: true
     })
   },
   getUserInput(e: any) {
-    //console.log("text:" + e.detail.text + ";")
+    if (e.detail.cursor === 0) {
+      this.setData({
+        save_disable: true
+      })
+    return
+    }
     this.setData({
-        userinput: e.detail.text,
-        save_disable: e.detail.text === "\n" || false
+        userinput: e.detail.value,
+        save_disable: false
     })
-    /*
-    const query = wx.createSelectorQuery()
-    query.select('#save_id')
-    query.exec(function (res) {
-      console.log(res)
-    })*/
   }
-
 })
