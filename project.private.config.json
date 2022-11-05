@@ -1,7 +1,8 @@
 {
   "projectname": "mini-learn",
   "setting": {
-    "compileHotReLoad": true
+    "compileHotReLoad": true,
+    "urlCheck": false
   },
   "libVersion": "2.6.3"
 }

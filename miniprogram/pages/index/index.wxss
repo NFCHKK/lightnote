@@ -1,40 +1,70 @@
 /**index.wxss**/
 .container {
-  min-height: 1200rpx;
-  height: fit-content;
-  background-color: rgba(243, 240, 225, 0.932);
-}
-.content {
-  height: 600rpx;
-  font-weight: lighter;
-  font-style: normal;
   display: flex;
   flex-direction: column;
+  align-content: stretch;
+  padding: 20rpx 0rpx 0rpx 0rpx;
+
+}
+.head {
+  width: 100%;
+
+  display: flex;
+  flex-direction: row;
+  justify-content: start;
+
+  padding: 0rpx 0rpx 10rpx 100rpx;
+}
+.content {
+  display: flex;
+  flex-direction: column;
+
+
 }
 .edit {
   display: flex;
   flex-direction: row;
   justify-content: space-around;
   align-content: center;
-  margin-top: 20rpx;
+  padding: 20rpx;
 }
 .note {
+  width: 100%;
   height: 120rpx;
-  width: 700rpx;
+  padding: 10rpx;
+
   border-radius: 5%;
-  background-color: rgb(233, 220, 220);
+  background-color: rgb(255, 255, 255);
+  border-style: groove;
+  border-width: 1rpx;
 
   text-align: left;
-  text-indent: 20rpx;
+  font-weight: lighter;
+}
+
+.note1 {
+  width: 100%;
+  height: 120rpx;
+  padding: 10rpx;
+
+  border-radius: 5%;
+  background-color: rgb(255, 255, 255);
+  border-style: outset;
+  border-width: 3rpx;
+
+  text-align: left;
+  font-weight: lighter;
+  border-color: orange;
 }
 
 
 .edit_menu {
   width: 700rpx;
   height: fit-content;
-  margin: 25rpx 25rpx 25rpx 25rpx;
+  margin: 25rpx 0rpx 0rpx 0rpx;
   font-size: 24rpx;
   font-style: oblique;
+  font-weight: lighter;
 
   display: flex; 
   flex-direction: row;
@@ -60,11 +90,11 @@
   flex-direction: column-reverse;
 }
 .usernotes {
-  height: auto;
-  border-radius: 5%;
-  border-bottom: 3rpx dashed rgb(216, 213, 213);
-  margin: 50rpx 30rpx 0rpx 30rpx;
-  padding-bottom: 20rpx;
-  text-indent: 40rpx;
+  margin: 30rpx 30rpx 0rpx 30rpx;
+  padding: 20rpx;
+}
+.usernotes textarea {
+  width: 100%;
+  border-bottom: 2rpx dashed rgb(228, 190, 119);
   font-weight: lighter;
 }

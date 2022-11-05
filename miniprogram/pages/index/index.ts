@@ -9,6 +9,7 @@ Page({
     store_data: new Array(),
     input_value: "",
     save_disable: true,
+    edit_class: "note",
     userInfo: {},
     hasUserInfo: false,
     canIUse: wx.canIUse('button.open-type.getUserInfo'),
@@ -32,6 +33,8 @@ Page({
     this.setData({
       show_data: this.data.store_data,
       input_value: "",
+      userinput: "",
+      save_disable: true,
     })
     //  send note json
     /*wx.request({
@@ -88,6 +91,16 @@ Page({
           hasUserInfo: true
         })
       }
+    })
+  },
+  onInputFocus() {
+    this.setData({
+      edit_class: "note1",
+    })
+  },
+  onInputLoseFocus(){
+    this.setData({
+      edit_class: "note",
     })
   },
   getUserInfo(e: any) {

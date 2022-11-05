@@ -1,8 +1,11 @@
 <!--index.wxml-->
 <view class="container">
+  <view class="head"> 
+    <view>hi, hkg</view>
+  </view>
   <view class="content">
     <view class="edit">
-      <textarea  class = "note" id= "editor" bindinput="getUserInput" placeholder="Any good idea ?" value="{{input_value}}"></textarea>
+      <textarea  class = "{{edit_class}}"  bindinput="getUserInput" bindfocus="onInputFocus" bindblur="onInputLoseFocus"   placeholder="Any good idea ?" value="{{input_value}}"></textarea>
     </view>
     <view class="edit_menu">
       <view class="edit_ele" id="save_id">
@@ -17,7 +20,7 @@
       <view wx:for="{{show_data}}" wx:key="unique" wx:for-item="item" wx:for-index="index">
       <view class="usernotes">
         <view style="font-size: small; font-weight: lighter;text-align: right;">{{item.time}}</view>
-        <view>{{item.note}}</view>
+        <textarea disabled="true" auto-height="true" value="{{item.note}}"></textarea>
       </view>
     </view>
     </view>
