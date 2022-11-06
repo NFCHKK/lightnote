@@ -1,7 +1,4 @@
 <!--pages/notes/notes.wxml-->
-<view wx:for="{{notes}}" wx:key="unique" wx:for-item="item" wx:for-index="index">
-      <view class="usernotes">
-        <view style="font-size: small; font-weight: lighter; text-align: right;">{{item.time}} </view>
-        <view>{{item.note}}</view>
-      </view>
-</view>
+<import src="../template/template.wxml"/>
+<template is="notes_list" data = "{{notes}}"/>
+

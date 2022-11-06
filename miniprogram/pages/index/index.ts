@@ -5,8 +5,8 @@ const app = getApp<IAppOption>()
 Page({
   data: {
     userinput: "",
-    show_data: new Array(),
     store_data: new Array(),
+    notes: new Array(),
     input_value: "",
     save_disable: true,
     edit_class: "note",
@@ -31,7 +31,7 @@ Page({
     let noteIns = {time: this.getlocalDate(), note: this.data.userinput}
     this.data.store_data.push(noteIns);
     this.setData({
-      show_data: this.data.store_data,
+      notes : this.data.store_data,
       input_value: "",
       userinput: "",
       save_disable: true,

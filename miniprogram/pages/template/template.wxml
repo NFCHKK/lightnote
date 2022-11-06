@@ -1,0 +1,10 @@
+<template name="notes_list">
+  <view class="show_notes">
+  <view wx:for="{{notes}}" wx:key="unique" wx:for-item="item" wx:for-index="index">
+      <view class="usernotes">
+        <view style="font-size: small; font-weight: lighter;text-align: right;">{{item.time}}</view>
+        <textarea disabled="true" auto-height="true" value="{{item.note}}"></textarea>
+      </view>
+  </view>
+</view>
+</template>

@@ -1,0 +1,13 @@
+.show_notes{
+  display: flex;
+  flex-direction: column;
+}
+.usernotes {
+  margin: 30rpx 30rpx 0rpx 30rpx;
+  padding: 20rpx;
+}
+.usernotes textarea {
+  width: 100%;
+  border-bottom: 2rpx dashed rgb(228, 190, 119);
+  font-weight: lighter;
+}

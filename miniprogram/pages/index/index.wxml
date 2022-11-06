@@ -1,7 +1,17 @@
 <!--index.wxml-->
+<import src="../template/template.wxml"/>
 <view class="container">
   <view class="head"> 
-    <view>hi, hkg</view>
+    <view class="userinfo">
+    <block wx:if="{{!hasUserInfo}}">
+      <button wx:if="{{canIUseGetUserProfile}}" bindtap="getUserProfile"> 获取头像昵称 </button>
+      <button wx:else open-type="getUserInfo" bindgetuserinfo="getUserInfo"> 获取头像昵称 </button>
+    </block>
+    <block wx:else>
+      <image bindtap="bindViewTap" class="userinfo-avatar" src="{{userInfo.avatarUrl}}" mode="cover"></image>
+      <text class="userinfo-nickname"> hi, {{userInfo.nickName}}</text>
+    </block>
+  </view>
   </view>
   <view class="content">
     <view class="edit">
@@ -16,13 +26,6 @@
         <button bindtap="onAllDelete">已删</button>
       </view>
     </view>
-    <view class="show_notes">
-      <view wx:for="{{show_data}}" wx:key="unique" wx:for-item="item" wx:for-index="index">
-      <view class="usernotes">
-        <view style="font-size: small; font-weight: lighter;text-align: right;">{{item.time}}</view>
-        <textarea disabled="true" auto-height="true" value="{{item.note}}"></textarea>
-      </view>
-    </view>
-    </view>
+    <template is="notes_list" data="{{notes}}"/>
   </view>
 </view>

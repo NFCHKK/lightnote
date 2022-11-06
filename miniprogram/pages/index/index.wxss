@@ -8,12 +8,28 @@
 }
 .head {
   width: 100%;
-
   display: flex;
   flex-direction: row;
   justify-content: start;
 
   padding: 0rpx 0rpx 10rpx 100rpx;
+}
+.userinfo {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+}
+.userinfo button {
+  border-radius: 10%;
+  background-color: rgb(238, 223, 182, 0.637);
+  font-weight: lighter;
+  line-height: 60rpx;
+}
+.userinfo image {
+  border-radius: 10%;
+  height: 60rpx;
+  width: 60rpx;
+  margin: 0rpx 30rpx 0 10rpx;
 }
 .content {
   display: flex;
@@ -82,7 +98,9 @@
   text-align:center;
   background-color: rgba(238, 223, 182, 0.637);
   border-radius: 20%;
-  margin: 0rpx 25rpx 0rpx 25rpx
+  margin: 0rpx 25rpx 0rpx 25rpx;
+  line-height: 60rpx;
+  font-weight: lighter;
 }
 
 .show_notes{
