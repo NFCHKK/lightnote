@@ -16,6 +16,8 @@
       "disablePlugins": [],
       "outputPath": ""
     },
+    "ignoreUploadUnusedFiles": false,
+    "ignoreDevUnusedFiles": false,
     "es6": true,
     "enhance": true,
     "minified": true,

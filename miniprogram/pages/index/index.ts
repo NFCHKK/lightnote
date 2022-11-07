@@ -1,7 +1,8 @@
 // index.ts
 // 获取应用实例
-const app = getApp<IAppOption>()
+import G6 from './../../../node_modules/@antv/g6';
 
+//const app = getApp<IAppOption>()
 Page({
   data: {
     userinput: "",
@@ -10,6 +11,7 @@ Page({
     input_value: "",
     save_disable: true,
     edit_class: "note",
+    pageName: "笔记",
     userInfo: {},
     hasUserInfo: false,
     canIUse: wx.canIUse('button.open-type.getUserInfo'),
@@ -17,6 +19,88 @@ Page({
     canIUseOpenData: wx.canIUse('open-data.type.userAvatarUrl') && wx.canIUse('open-data.type.userNickName') // 如需尝试获取用户信息可改为false
   },
 
+  treeData: {
+    id: '1',
+    label: 'label',
+    children: [
+      {
+        id: '1-1',
+        label: 'label1-1',
+        children: [
+          {
+            id: '1-1-1',
+            label: 'label1-1-1',
+            value: 50,
+          },
+          {
+            id: '1-1-2',
+            label: 'label1-1-2',
+            value:30,
+          }
+        ]
+      },
+      {
+        id: '1-2',
+        label: 'label1-2',
+        children: [
+          {
+            id: '1-2-1',
+            label: 'label1-2-1',
+            value: 40
+          },
+          {
+            id: '1-2-2',
+            label: "label1-2-2",
+            value: 10,
+          }
+        ]
+      }
+    ]
+  },
+ 
+
+  switchMode() {
+    if (this.data.pageName === "笔记") {
+      this.setData({
+        pageName: "导图",
+      })
+      return
+    }
+    if (this.data.pageName === "导图") {
+      this.setData({
+        pageName: "笔记",
+      })
+    }
+  },
+  drawMind() {
+  const graph = new G6.Graph({
+  container: '#container',
+     /* width: 500,
+    height: 500,
+    defaultNode: {
+      type: 'circle',
+      size: [100],
+      color: '#5B8FF9',
+      style: {
+        fill: '#9EC9FF',
+        lineWidth: 3,
+      },
+      labelCfg: {
+        style: {
+          fill: '#fff',
+          fontSize: 20,
+        },
+      },
+    },
+    defaultEdge: {
+      style: {
+        stroke: '#e2e2e2',
+      },
+    },*/
+  })
+  /*graph.data(this.treeData)
+  graph.render()*/
+  },
   getlocalDate() {
     let timeNow = new Date()
     return timeNow.getFullYear() + "/" + timeNow.getMonth() + "/" +
