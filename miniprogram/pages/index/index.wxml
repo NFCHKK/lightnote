@@ -32,5 +32,8 @@
   <view wx:if="{{pageName === '导图'}}" >
     <view>todo思维导图</view>
     <button bindtap="drawMind">drawMind</button>
+    
+    <view id="mindContainer"> 导图位置</view>
   </view>
+
 </view>

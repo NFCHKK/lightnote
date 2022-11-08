@@ -1,8 +1,7 @@
 // index.ts
 // 获取应用实例
-import G6 from './../../../node_modules/@antv/g6';
 
-//const app = getApp<IAppOption>()
+const app = getApp<IAppOption>()
 Page({
   data: {
     userinput: "",
@@ -73,33 +72,7 @@ Page({
     }
   },
   drawMind() {
-  const graph = new G6.Graph({
-  container: '#container',
-     /* width: 500,
-    height: 500,
-    defaultNode: {
-      type: 'circle',
-      size: [100],
-      color: '#5B8FF9',
-      style: {
-        fill: '#9EC9FF',
-        lineWidth: 3,
-      },
-      labelCfg: {
-        style: {
-          fill: '#fff',
-          fontSize: 20,
-        },
-      },
-    },
-    defaultEdge: {
-      style: {
-        stroke: '#e2e2e2',
-      },
-    },*/
-  })
-  /*graph.data(this.treeData)
-  graph.render()*/
+
   },
   getlocalDate() {
     let timeNow = new Date()

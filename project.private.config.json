@@ -1,9 +1,10 @@
 {
   "projectname": "mini-learn",
   "setting": {
-    "compileHotReLoad": false,
+    "compileHotReLoad": true,
     "urlCheck": false,
-    "autoAudits": false
+    "autoAudits": false,
+    "bigPackageSizeSupport": false
   },
   "libVersion": "2.27.1"
 }
