@@ -16,7 +16,7 @@
       "disablePlugins": [],
       "outputPath": ""
     },
-    "ignoreUploadUnusedFiles": false,
+    "ignoreUploadUnusedFiles": true,
     "ignoreDevUnusedFiles": false,
     "es6": true,
     "enhance": true,
@@ -25,6 +25,7 @@
   },
   "simulatorType": "wechat",
   "simulatorPluginLibVersion": {},
+  "lazyCodeLoading": "requiredComponents",
   "condition": {},
   "srcMiniprogramRoot": "miniprogram/",
   "appid": "wxd66e46d6f6ceae2c",

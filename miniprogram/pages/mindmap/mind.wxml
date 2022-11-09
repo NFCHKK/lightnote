@@ -1,0 +1,11 @@
+<!--pages/mindmap/mind.wxml-->
+<view >
+    <view class="mindMap" id="mindId">
+      <f6-canvas width="{{canvasWidth}}"
+      height="{{canvasHeight}}"
+      pixelRatio="{{pixelRatio}}"
+      bind:onInit="handleCanvasInit"
+      bind:onTouchEvent="handleTouch" />
+    </view>
+    <button bindtap="drawMind">刷新</button>
+</view>

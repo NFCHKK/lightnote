@@ -1,0 +1,15 @@
+/* pages/mindmap/mind.wxss */
+.mindMap {
+  margin: 20rpx;
+  border: rgb(148, 145, 140) dashed 2rpx;
+  height: fit-content;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: left;
+
+}
+.mindMap f6-canvas {
+  background-color: white;
+}

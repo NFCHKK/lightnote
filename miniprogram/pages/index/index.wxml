@@ -14,7 +14,7 @@
   </view>
   <button bindtap="switchMode">{{pageName}}</button>
   </view>
-  <view wx:if = "{{pageName === '笔记'}}" class="content">
+  <view class="content">
     <view class="edit">
       <textarea  class = "{{edit_class}}"  bindinput="getUserInput" bindfocus="onInputFocus" bindblur="onInputLoseFocus"   placeholder="Any good idea ?" value="{{input_value}}"></textarea>
     </view>
@@ -29,11 +29,4 @@
     </view>
     <template is="notes_list" data="{{notes}}"/>
   </view>
-  <view wx:if="{{pageName === '导图'}}" >
-    <view>todo思维导图</view>
-    <button bindtap="drawMind">drawMind</button>
-    
-    <view id="mindContainer"> 导图位置</view>
-  </view>
-
 </view>

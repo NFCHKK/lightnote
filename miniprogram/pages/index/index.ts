@@ -10,69 +10,17 @@ Page({
     input_value: "",
     save_disable: true,
     edit_class: "note",
-    pageName: "笔记",
+    pageName: "导图",
     userInfo: {},
     hasUserInfo: false,
     canIUse: wx.canIUse('button.open-type.getUserInfo'),
     canIUseGetUserProfile: false,
     canIUseOpenData: wx.canIUse('open-data.type.userAvatarUrl') && wx.canIUse('open-data.type.userNickName') // 如需尝试获取用户信息可改为false
   },
-
-  treeData: {
-    id: '1',
-    label: 'label',
-    children: [
-      {
-        id: '1-1',
-        label: 'label1-1',
-        children: [
-          {
-            id: '1-1-1',
-            label: 'label1-1-1',
-            value: 50,
-          },
-          {
-            id: '1-1-2',
-            label: 'label1-1-2',
-            value:30,
-          }
-        ]
-      },
-      {
-        id: '1-2',
-        label: 'label1-2',
-        children: [
-          {
-            id: '1-2-1',
-            label: 'label1-2-1',
-            value: 40
-          },
-          {
-            id: '1-2-2',
-            label: "label1-2-2",
-            value: 10,
-          }
-        ]
-      }
-    ]
-  },
- 
-
   switchMode() {
-    if (this.data.pageName === "笔记") {
-      this.setData({
-        pageName: "导图",
-      })
-      return
-    }
-    if (this.data.pageName === "导图") {
-      this.setData({
-        pageName: "笔记",
-      })
-    }
-  },
-  drawMind() {
-
+    wx.navigateTo({
+      url: '../mindmap/mind',
+    })
   },
   getlocalDate() {
     let timeNow = new Date()
@@ -93,24 +41,6 @@ Page({
       userinput: "",
       save_disable: true,
     })
-    //  send note json
-    /*wx.request({
-      url: 'http://127.0.0.1:8081/helloservice/savenotes',
-      data : {
-        "head": {
-          "id": "dannyhkk",
-        },
-        "notes": notes
-      },
-      method: 'POST',
-
-      header: {
-        'content-type': 'application/json'
-      },
-      success(res) {
-        console.log(res.data)
-      }
-    })*/
   },
   // 事件处理函数
   bindViewTap() {
@@ -120,13 +50,12 @@ Page({
   },
   onAllNotes() {
     wx.navigateTo({
-      url: '../notes/notes?note=notes'
+      url: '../notes/notes'
     })
   },
   onAllDelete() {
     wx.navigateTo({
       url: '../notes/notes',
-      events: this.data.store_data,
     })
   },
   onLoad() {
@@ -178,5 +107,11 @@ Page({
         userinput: e.detail.value,
         save_disable: false
     })
-  }
+  },
+    /**
+   * Lifecycle function--Called when page unload
+   */
+  onUnload() {
+
+  },
 })

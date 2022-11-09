@@ -2,7 +2,8 @@
   "pages": [
     "pages/index/index",
     "pages/logs/logs",
-    "pages/notes/notes"
+    "pages/notes/notes",
+    "pages/mindmap/mind"
   ],
   "window": {
     "backgroundTextStyle": "light",
