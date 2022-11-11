@@ -8,6 +8,7 @@
   flex-direction: column;
   justify-content: flex-start;
   align-items: left;
+  background-color: green;
 
 }
 .mindMap f6-canvas {

@@ -24,7 +24,7 @@
   },
   "include": [
     "./**/*.ts"
-  ],
+, "miniprogram/pages/mindmap/data.js"  ],
   "exclude": [
     "node_modules"
   ]

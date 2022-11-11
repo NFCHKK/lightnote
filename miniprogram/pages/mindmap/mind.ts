@@ -1,7 +1,8 @@
 // pages/mindmap/mind.ts
 
-import * as F6 from '@antv/f6-wx';
-import force from '@antv/f6-wx/extends/layout/forceLayout';
+const F6 = require('@antv/f6-wx')
+const TreeGraph = require('@antv/f6-wx/extends/graph/treeGraph')
+import treeData from './data'
 
 Page({
   canvas: null,
@@ -14,7 +15,7 @@ Page({
   data: {
     canvasWidth: 300,
     canvasHeight: 500,
-    pixelRatio: 0.2,
+    pixelRatio: 1,
     forceMini: false,
   },
 
@@ -22,7 +23,7 @@ Page({
    * Lifecycle function--Called when page load
    */
   onLoad() {
-    F6.registerLayout('TreeGraph', force);
+    F6.registerGraph('TreeGraph', TreeGraph)
     // 同步获取window的宽高
     let that = this
     const query = wx.createSelectorQuery()
@@ -32,7 +33,7 @@ Page({
       that.setData({
         canvasWidth: res[0].width,
         canvasHeight: res[0].height,
-        pixrelRatio: 0.2,
+        pixrelRatio: 1,
       })
     })
     /*const { windowWidth, windowHeight, pixelRatio } = wx.getSystemInfoSync();
@@ -55,30 +56,7 @@ Page({
     this.graph && this.graph.emitEvent(e.detail);
   },
   updateChart() {
-    const data = {
-      nodes: [
-        { id: 'node0', size: 50 },
-        { id: 'node1', size: 30},
-        { id: 'node2', size: 30},
-
-        { id: 'node3', size: 20},
-        { id: 'node4', size: 20},
-
-        { id: 'node5', size: 10},
-        { id: 'node6', size: 10},
-      ],
-      edges: [
-        { source: 'node0', target: 'node1', id: 'edge1' },
-        { source: 'node0', target: 'node2', id: 'edge2' },
-
-        { source: 'node1', target: 'node3', id: 'edge3' },
-        { source: 'node1', target: 'node4', id: 'edge4' },
-
-        { source: 'node3', target: 'node5', id: 'edge5' },
-        { source: 'node3', target: 'node6', id: 'edge6' },
-      ],
-    };
-    this.graph = new F6.Graph({
+    this.graph = new F6.TreeGraph({
       container: this.canvas,
       context: this.ctx,
       renderer: this.renderer,
@@ -86,18 +64,39 @@ Page({
       height: this.data.canvasHeight,
       pixelRation: this.data.pixelRatio,
       modes: {
-        default: ['drag-canvas', 'zoom-canvas'],
+        default: [
+          {
+            type: "collapse-expand",
+          },
+          'drag-nodes',
+          'drag-canvas',
+          'zoom-canvas'
+        ],
       },
       layout: {
-        type: 'TreeGraph',
+        type: 'mindmap',
+        direction: 'LR',
+        nodeSep: 100,
+        rankSep: 200,
+        workerEnabled: true,
+        preventOverlap: true,
+        getHGap: ()=>30,
       },
       defaultNode: {
-        size: 15,
+        type: 'rect',
+        size: [50, 20],
+        style: {
+          'radius': 5
+        }
+      },
+      defaultEdge: {
+        type: 'cubic-horizontal',
+        size: 1,
       },
     });
 
     // 注册数据
-    this.graph.data(data);
+    this.graph.data(treeData);
     this.graph.render();
     this.graph.fitView();
   },
