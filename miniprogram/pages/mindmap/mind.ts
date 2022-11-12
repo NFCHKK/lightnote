@@ -2,13 +2,15 @@
 
 const F6 = require('@antv/f6-wx')
 const TreeGraph = require('@antv/f6-wx/extends/graph/treeGraph')
-import treeData from './data'
 
 Page({
   canvas: null,
   ctx: null,
   renderer: '', // mini、mini-native等，F6需要，标记环境
   graph: null,
+  itemSelected: null,
+  i: 0,
+  userinput: "",
   /**
    * Page initial data
    */
@@ -17,6 +19,7 @@ Page({
     canvasHeight: 500,
     pixelRatio: 1,
     forceMini: false,
+    inputData: "",
   },
 
   /**
@@ -29,23 +32,14 @@ Page({
     const query = wx.createSelectorQuery()
     query.select('#mindId').boundingClientRect()
     query.exec(function(res){
-      console.log(res[0].top);
       that.setData({
         canvasWidth: res[0].width,
         canvasHeight: res[0].height,
         pixrelRatio: 1,
       })
     })
-    /*const { windowWidth, windowHeight, pixelRatio } = wx.getSystemInfoSync();
-    console.log(windowWidth, windowHeight)
-    this.setData({
-      canvasWidth: windowWidth,
-      canvasHeight: windowHeight,
-      pixelRatio,
-    });*/
   },
   handleCanvasInit(e:any) {
-    console.log("init: " + e)
     const { ctx, canvas, renderer } = e.detail;
     this.ctx = ctx;
     this.renderer = renderer;
@@ -67,10 +61,11 @@ Page({
         default: [
           {
             type: "collapse-expand",
+            trigger: 'dblclick',
           },
           'drag-nodes',
           'drag-canvas',
-          'zoom-canvas'
+          'zoom-canvas',
         ],
       },
       layout: {
@@ -84,9 +79,14 @@ Page({
       },
       defaultNode: {
         type: 'rect',
-        size: [50, 20],
+        size: [25, 10],
         style: {
-          'radius': 5
+          'radius': 1
+        },
+        labelCfg: {
+          style: {
+            fontSize: 8,
+          }
         }
       },
       defaultEdge: {
@@ -94,14 +94,51 @@ Page({
         size: 1,
       },
     });
-
     // 注册数据
-    this.graph.data(treeData);
+    this.graph.data({
+      id: "root",
+      label: "MindMap",
+      //size: [25, 10],
+      labelCfg: {
+        style: {
+          fontSize: 8,
+        }
+      }
+    });
     this.graph.render();
     this.graph.fitView();
+    let that = this
+    this.graph.on('node:tap', (evt:any) => {
+      console.log("dbltap:")
+      that.itemSelected = evt.item
+  });
   },
-  drawMind() {
-    this.updateChart()
+  AddNode() {
+    console.log("item: " + this.itemSelected)
+    console.log("input: " + this.userinput)
+    if (this.itemSelected === null) {
+      return
+    }
+    if (this.userinput === "") {
+      return
+    }
+    const model = this.itemSelected.getModel()
+    console.log(model.id)
+    this.graph.addChild({
+      id: this.userinput,
+      label: this.userinput
+    }, model.id)
+    this.itemSelected.clearStates("selected")
+    this.itemSelected = null
+    this.userinput = ""
+    this.setData({
+      inputData: "",
+    })
+    //item.refresh()
+    //item.enableCapture(true)
+  },
+  getUserInput(e: any) {
+    this.userinput = e.detail.value
   },
   onUnload() {
     this.graph && this.graph.destroy();
@@ -146,5 +183,9 @@ Page({
    */
   onShareAppMessage() {
 
+  },
+
+  onResize(e) {
+    console.log("rotate: " + e)
   }
 })

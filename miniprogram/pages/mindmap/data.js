@@ -1,5 +1,6 @@
 export default {
   id: 'Modeling Methods',
+  label: '读书笔记',
   children: [
     {
       id: 'Classification',

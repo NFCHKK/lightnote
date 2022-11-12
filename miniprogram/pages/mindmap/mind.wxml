@@ -1,5 +1,5 @@
 <!--pages/mindmap/mind.wxml-->
-<view >
+<view class="mind-container">
     <view class="mindMap" id="mindId">
       <f6-canvas width="{{canvasWidth}}"
       height="{{canvasHeight}}"
@@ -7,5 +7,8 @@
       bind:onInit="handleCanvasInit"
       bind:onTouchEvent="handleTouch" />
     </view>
-    <button bindtap="drawMind">刷新</button>
+    <view class="node-input">
+      <button bindtap="AddNode">添加</button>
+      <textarea value="{{inputData}}" bindinput="getUserInput" ></textarea>
+    </view>
 </view>
