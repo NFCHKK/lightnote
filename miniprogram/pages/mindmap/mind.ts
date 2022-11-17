@@ -27,6 +27,21 @@ Page({
    */
   onLoad() {
     F6.registerGraph('TreeGraph', TreeGraph)
+    F6.registerBehavior('tree-select-expand', {
+      getEvents() {
+        return {
+          //'node:tap': 'onNodeTap',
+          "node:dbltap": 'onNodeDblTap',
+        };
+      },
+      onNodeTap(evt:any) {
+        console.log("node tab: " + evt.item.getModel().id)
+        
+      },
+      onNodeDblTap(evt:any) {
+        console.log("node db tab: " + evt.item.getModel().id)
+      },
+    });
     // 同步获取window的宽高
     let that = this
     const query = wx.createSelectorQuery()
@@ -58,14 +73,10 @@ Page({
       height: this.data.canvasHeight,
       pixelRation: this.data.pixelRatio,
       modes: {
-        default: [
-          {
-            type: "collapse-expand",
-            trigger: 'dblclick',
-          },
-          'drag-nodes',
+        edit: [
+          'tree-select-expand',
           'drag-canvas',
-          'zoom-canvas',
+          'zoom-canvas'
         ],
       },
       layout: {
@@ -85,7 +96,7 @@ Page({
         },
         labelCfg: {
           style: {
-            fontSize: 8,
+            fontSize: 10,
           }
         }
       },
@@ -98,22 +109,34 @@ Page({
     this.graph.data({
       id: "root",
       label: "MindMap",
-      //size: [25, 10],
+      size: [25, 10],
       labelCfg: {
         style: {
-          fontSize: 8,
+          fontSize: 10,
         }
       }
     });
+    this.graph.setMode("edit");
     this.graph.render();
     this.graph.fitView();
     let that = this
-    this.graph.on('node:tap', (evt:any) => {
-      console.log("dbltap:")
+    this.graph.on('dbltap', (evt:any) => {
       that.itemSelected = evt.item
-  });
+      console.log("evt.detail: " + evt.type)
+    });
+  },
+  TestCanvasTap() {
+    console.log("test canvas tap")
   },
   AddNode() {
+    const node = this.graph.findById("root")
+    this.graph.emit('node:dbltap', {
+      item: node,
+      target: node.getKeyShape(),
+      x: 10,
+      y: 10
+    })
+    return
     console.log("item: " + this.itemSelected)
     console.log("input: " + this.userinput)
     if (this.itemSelected === null) {
@@ -187,5 +210,5 @@ Page({
 
   onResize(e) {
     console.log("rotate: " + e)
-  }
+  },
 })

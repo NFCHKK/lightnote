@@ -13,9 +13,8 @@ Page({
     pageName: "导图",
     userInfo: {},
     hasUserInfo: false,
-    canIUse: wx.canIUse('button.open-type.getUserInfo'),
-    canIUseGetUserProfile: false,
-    canIUseOpenData: wx.canIUse('open-data.type.userAvatarUrl') && wx.canIUse('open-data.type.userNickName') // 如需尝试获取用户信息可改为false
+    canIUseGetUserProfile: true,
+    canIUseOpenData: false // 如需尝试获取用户信息可改为false
   },
   switchMode() {
     wx.navigateTo({
@@ -41,6 +40,29 @@ Page({
       userinput: "",
       save_disable: true,
     })
+    if (!this.data.hasUserInfo) {
+      wx.showModal({
+        title: '警告',
+        content: '请获取用户名字'
+      })
+      return
+    }
+    wx.request({
+      url: 'https://m.dannyhkk.cn:8088/helloservice/savenotes', //仅为示例，并非真实的接口地址
+      data: {
+        "head": {
+          "id": this.data.userInfo.nickName,
+        },
+        "notes":JSON.stringify(this.data.notes),
+      },
+      header: {
+        'content-type': 'application/json' // 默认值
+      },
+      method: 'POST',
+      success (res) {
+        console.log(res.data)
+      }
+    })
   },
   // 事件处理函数
   bindViewTap() {
@@ -50,7 +72,7 @@ Page({
   },
   onAllNotes() {
     wx.navigateTo({
-      url: '../notes/notes'
+      url: '../notes/notes?nickName=' + this.data.userInfo.nickName
     })
   },
   onAllDelete() {
@@ -68,13 +90,36 @@ Page({
   },
   getUserProfile() {
     // 推荐使用wx.getUserProfile获取用户信息，开发者每次通过该接口获取用户个人信息均需用户确认，开发者妥善保管用户快速填写的头像昵称，避免重复弹窗
+    let that = this
     wx.getUserProfile({
-      desc: '展示用户信息', // 声明获取用户个人信息后的用途，后续会展示在弹窗中，请谨慎填写
+      desc: '用于拉取用户日志', // 声明获取用户个人信息后的用途，后续会展示在弹窗中，请谨慎填写
       success: (res) => {
-        console.log(res)
-        this.setData({
+        console.log(res.userInfo)
+        that.setData({
           userInfo: res.userInfo,
           hasUserInfo: true
+        })
+
+        wx.request({
+          url: 'https://m.dannyhkk.cn:8088/helloservice/getnotes', //仅为示例，并非真实的接口地址
+          data: {
+            "head": {
+              "id": res.userInfo.nickName,
+            },
+          },
+          header: {
+            'content-type': 'application/json' // 默认值
+          },
+          method: 'POST',
+          success (res) {
+            console.log(res.data)
+            if (res.data.Head.code === 0) {
+              that.setData({
+                notes: JSON.parse(res.data.notes)
+              })
+              that.data.store_data = that.data.notes
+            }
+          }
         })
       }
     })

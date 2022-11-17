@@ -5,18 +5,38 @@ Page({
    * Page initial data
    */
   data: {
-    notes : new Array()
+    notes : new Array(),
+    nickName: "",
   },
 
   /**
    * Lifecycle function--Called when page load
    */
   onLoad(option) {
-    console.log(option)
-    this.setData({
-    notes: [{time: "2022/10/06 15:13:28", note: "this is a test note 1"},
-    {time: "2022/10/06 15:13:28",note: "this is a test note 2"}]
-    })
+    this.data.nickName = option.nickName
+    if (this.data.nickName != "") {
+      let that = this
+      wx.request({
+        url: 'https://m.dannyhkk.cn:8088/helloservice/getnotes', //仅为示例，并非真实的接口地址
+        data: {
+          "head": {
+            "id": this.data.nickName,
+          },
+        },
+        header: {
+          'content-type': 'application/json' // 默认值
+        },
+        method: 'POST',
+        success (res) {
+          console.log(res.data)
+          if (res.data.Head.code === 0) {
+            that.setData({
+              notes: JSON.parse(res.data.notes)
+            })
+          }
+        }
+      })
+    }
   },
 
   /**

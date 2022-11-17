@@ -5,7 +5,8 @@
       height="{{canvasHeight}}"
       pixelRatio="{{pixelRatio}}"
       bind:onInit="handleCanvasInit"
-      bind:onTouchEvent="handleTouch" />
+      bind:onTouchEvent="handleTouch"
+      bindtap="TestCanvasTap" />
     </view>
     <view class="node-input">
       <button bindtap="AddNode">添加</button>
