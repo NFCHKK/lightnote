@@ -6,21 +6,22 @@ Page({
    */
   data: {
     notes : new Array(),
-    nickName: "",
+    openid: "",
   },
 
   /**
    * Lifecycle function--Called when page load
    */
   onLoad(option) {
-    this.data.nickName = option.nickName
-    if (this.data.nickName != "") {
+    this.data.openid = option.openid
+    console.log(this.data.openid)
+    if (this.data.openid != "") {
       let that = this
       wx.request({
         url: 'https://m.dannyhkk.cn:8088/helloservice/getnotes', //仅为示例，并非真实的接口地址
         data: {
           "head": {
-            "id": this.data.nickName,
+            "id": this.data.openid,
           },
         },
         header: {

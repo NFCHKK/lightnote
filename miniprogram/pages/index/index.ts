@@ -14,7 +14,8 @@ Page({
     userInfo: {},
     hasUserInfo: false,
     canIUseGetUserProfile: true,
-    canIUseOpenData: false // 如需尝试获取用户信息可改为false
+    canIUseOpenData: false, // 如需尝试获取用户信息可改为false
+    openId: ""
   },
   switchMode() {
     wx.navigateTo({
@@ -51,7 +52,7 @@ Page({
       url: 'https://m.dannyhkk.cn:8088/helloservice/savenotes', //仅为示例，并非真实的接口地址
       data: {
         "head": {
-          "id": this.data.userInfo.nickName,
+          "id": this.data.openId,
         },
         "notes":JSON.stringify(this.data.notes),
       },
@@ -72,22 +73,55 @@ Page({
   },
   onAllNotes() {
     wx.navigateTo({
-      url: '../notes/notes?nickName=' + this.data.userInfo.nickName
+      url: '../notes/notes?openid=' + this.data.openId
     })
   },
   onAllDelete() {
+    /*
     wx.navigateTo({
       url: '../notes/notes',
-    })
+    })*/
   },
   onLoad() {
-    wx.clearStorageSync()
+    wx.getStorage({
+      key: "open_id",
+      success: (res)=>{
+        console.log("get store open_id success: " + res.data)
+        this.setData({
+          openId: res.data
+        })
+      }
+    })
     // @ts-ignore
     if (wx.getUserProfile) {
       this.setData({
         canIUseGetUserProfile: true
       })
     }
+  },
+  getUserNotes() {
+    let that = this
+    wx.request({
+      url: 'https://m.dannyhkk.cn:8088/helloservice/getnotes', //仅为示例，并非真实的接口地址
+      data: {
+        "head": {
+          "id": that.data.openId,
+        },
+      },
+      header: {
+        'content-type': 'application/json' // 默认值
+      },
+      method: 'POST',
+      success (res) {
+        console.log("get notes result: " + res.data)
+        if (res.data.Head.code === 0) {
+          that.setData({
+            notes: JSON.parse(res.data.notes)
+          })
+          that.data.store_data = that.data.notes
+        }
+      }
+    })
   },
   getUserProfile() {
     // 推荐使用wx.getUserProfile获取用户信息，开发者每次通过该接口获取用户个人信息均需用户确认，开发者妥善保管用户快速填写的头像昵称，避免重复弹窗
@@ -100,28 +134,47 @@ Page({
           userInfo: res.userInfo,
           hasUserInfo: true
         })
-
+      }
+    })
+    console.log("user open id: " + this.data.openId)
+    if (this.data.openId != "") {
+      this.getUserNotes()
+      return
+    }
+    wx.login({
+      success:(res) => {
+        console.log(res.code)
         wx.request({
-          url: 'https://m.dannyhkk.cn:8088/helloservice/getnotes', //仅为示例，并非真实的接口地址
+          url: 'https://m.dannyhkk.cn:8088/helloservice/miniauth', //仅为示例，并非真实的接口地址
           data: {
-            "head": {
-              "id": res.userInfo.nickName,
-            },
+            "code": res.code,
           },
           header: {
             'content-type': 'application/json' // 默认值
           },
           method: 'POST',
           success (res) {
-            console.log(res.data)
-            if (res.data.Head.code === 0) {
+            console.log("miniauth result: " + res.data)
+            const result = JSON.parse(res.data.loginCode)
+            if (res.data.head.code === 0) {
               that.setData({
-                notes: JSON.parse(res.data.notes)
+                openId: result.openid
               })
-              that.data.store_data = that.data.notes
+              wx.setStorage({
+                key: "open_id",
+                data: that.data.openId,
+                success: ()=>{
+                  console.log("save openid success")
+                }
+              })
+              console.log("get user open id: " + that.data.openId)
+              that.getUserNotes()
             }
           }
         })
+      },
+      fail: (res) => {
+        console.log(res.errMsg)
       }
     })
   },
