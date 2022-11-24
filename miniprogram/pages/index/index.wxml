@@ -1,5 +1,4 @@
 <!--index.wxml-->
-<import src="../template/template.wxml"/>
 <view class="container">
   <view class="head"> 
     <view class="userinfo">
@@ -11,7 +10,7 @@
       <text class="userinfo-nickname"> hi, {{userInfo.nickName}}</text>
     </block>
   </view>
-  <button bindtap="switchMode">{{pageName}}</button>
+  <!--button bindtap="switchMode" show="hide">{{pageName}}</button-->
   </view>
   <view class="content">
     <view class="edit">
@@ -26,6 +25,20 @@
         <button bindtap="onAllDelete">已删</button>
       </view>
     </view>
-    <template is="notes_list" data="{{notes}}"/>
+    <view class="show_notes">
+    <view wx:for="{{notes}}" wx:key="unique" wx:for-item="item" wx:for-index="index">
+      <view class="usernotes">
+        <movable-area>
+          <movable-view direction="horizontal" out-of-bounds="true" bindchange="dragMoveNote" friction="15" damping="50" x="{{x[index]}}" id="{{index}}">
+              <view style="font-size: small; font-weight: lighter;text-align: right;">{{item.time}}</view>
+              <textarea disabled="true" auto-height="true" value="{{item.note}}"></textarea>
+          </movable-view>
+        </movable-area>
+        <view class="notedelete">
+          <button>删除</button>
+        </view>
+      </view>
+    </view>
+  </view>
   </view>
 </view>

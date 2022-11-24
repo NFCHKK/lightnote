@@ -1,10 +1,17 @@
 <template name="notes_list">
   <view class="show_notes">
-  <view wx:for="{{notes}}" wx:key="unique" wx:for-item="item" wx:for-index="index">
+    <view wx:for="{{notes}}" wx:key="unique" wx:for-item="item" wx:for-index="index">
       <view class="usernotes">
-        <view style="font-size: small; font-weight: lighter;text-align: right;">{{item.time}}</view>
-        <textarea disabled="true" auto-height="true" value="{{item.note}}"></textarea>
+        <movable-area>
+          <movable-view direction="horizontal" inertia="{{true}}" out-of-bounds="{{true}}" friction="150">
+              <view style="font-size: small; font-weight: lighter;text-align: right;">{{item.time}}</view>
+              <textarea disabled="true" auto-height="true" value="{{item.note}}"></textarea>
+          </movable-view>
+        </movable-area>
+        <view class="notedelete">
+          <button>删除</button>
+        </view>
       </view>
+    </view>
   </view>
-</view>
 </template>

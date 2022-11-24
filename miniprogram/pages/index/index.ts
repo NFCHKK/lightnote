@@ -15,13 +15,53 @@ Page({
     hasUserInfo: false,
     canIUseGetUserProfile: true,
     canIUseOpenData: false, // 如需尝试获取用户信息可改为false
-    openId: ""
+    openId: "",
+    x: new Array(),
   },
   switchMode() {
     wx.navigateTo({
       url: '../mindmap/mind',
     })
   },
+  dragMoveNote(e: any) {
+    if (e.detail.source === "") {
+      return
+    }
+    let list_index = parseInt(e.target.id)
+    if (this.data.x[list_index] === e.detail.x) {
+      return
+    }
+    console.log("touch: " + e.detail.source + " x: " + e.detail.x)
+    this.data.x.map((value, index) =>{
+      if (value < 0) {
+        this.data.x[index] = 0
+      }
+    })
+    this.data.x[list_index] = e.detail.x
+    this.setData({
+      x: this.data.x
+    })
+    console.log(this.data.x)
+    return
+    if (e.detail.source === "touch-out-of-bounds") {
+      if (e.detail.x > 0) {
+        console.log("touch x: " + e.detail.x)
+        let list_index = 0 + e.target.id
+        this.data.x[list_index] = 0
+        this.setData({
+          x: this.data.x
+        })
+        return
+      }
+      if (e.detail.x < 0) {
+        console.log("touch x: " + e.detail.x)
+        this.setData({
+         x: this.data.x
+        })
+      }
+    }
+  },
+
   getlocalDate() {
     let timeNow = new Date()
     return timeNow.getFullYear() + "/" + timeNow.getMonth() + "/" +
@@ -90,6 +130,9 @@ Page({
         this.setData({
           openId: res.data
         })
+      },
+      fail: (res)=>{
+        console.log("get store open_id failed: " + res.errMsg)
       }
     })
     // @ts-ignore
@@ -115,8 +158,10 @@ Page({
       success (res) {
         console.log("get notes result: " + res.data)
         if (res.data.Head.code === 0) {
+          let tmp_notes = JSON.parse(res.data.notes)
           that.setData({
-            notes: JSON.parse(res.data.notes)
+            notes: tmp_notes,
+            x: new Array(tmp_notes.length).fill(0)
           })
           that.data.store_data = that.data.notes
         }

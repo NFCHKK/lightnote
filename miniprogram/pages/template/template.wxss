@@ -3,9 +3,43 @@
   flex-direction: column;
 }
 .usernotes {
+  width: 650rpx;
+  height: 100rpx;
   margin: 30rpx 30rpx 0rpx 30rpx;
   padding: 20rpx;
+  overflow: hidden;
+  display: flex;
+  flex-direction: row;
+  position: relative;
 }
+.usernotes movable-area {
+  height: 100rpx;
+  width: 100%;
+  z-index: 4;
+}
+.usernotes movable-view {
+  height: 100rpx;
+  width: 100%;
+  z-index: 5;
+  background-color: rgb(235, 204, 179);
+  opacity: 1;
+}
+.notedelete {
+  position: absolute;
+  right: 0;
+  width: 200rpx;
+  margin-right: 20rpx;
+  z-index: 0;
+  display: flex;
+  justify-content: left;
+}
+.notedelete button {
+  align-self: left;
+  height: 100rpx;
+  width: 20%;
+  background-color: green;
+}
+
 .usernotes textarea {
   width: 100%;
   border-bottom: 2rpx dashed rgb(228, 190, 119);
