@@ -31,7 +31,6 @@ Page({
     if (this.data.x[list_index] === e.detail.x) {
       return
     }
-    console.log("touch: " + e.detail.source + " x: " + e.detail.x)
     this.data.x.map((value, index) =>{
       if (value < 0) {
         this.data.x[index] = 0
@@ -41,7 +40,6 @@ Page({
     this.setData({
       x: this.data.x
     })
-    console.log(this.data.x)
     return
     if (e.detail.source === "touch-out-of-bounds") {
       if (e.detail.x > 0) {
@@ -62,6 +60,24 @@ Page({
     }
   },
 
+  deleteNote(e: any) {
+    console.log(e.target.id)
+    let new_notes = new Array()
+    let new_x = new Array()
+    for (let i = 0; i < this.data.notes.length; i ++) {
+      if (this.data.notes[i].id != e.target.id) {
+        new_notes.push(this.data.notes[i])
+        new_x.push(this.data.x[i])
+      }
+    }
+  
+    this.setData({
+      notes: new_notes,
+      x: new_x
+    })
+    this.saveNotes()
+  },
+
   getlocalDate() {
     let timeNow = new Date()
     return timeNow.getFullYear() + "/" + timeNow.getMonth() + "/" +
@@ -69,11 +85,20 @@ Page({
       + timeNow.getSeconds()
   },
 
+  getNoteId: function() {
+   // tmp
+   return Date.now().toString(6)
+  },
+
   onAddData: function() {
     if(this.data.userinput === ""){
       return
     }
-    let noteIns = {time: this.getlocalDate(), note: this.data.userinput}
+    let noteIns = {
+      time: this.getlocalDate(),
+      note: this.data.userinput,
+      id: this.getNoteId()
+    }
     this.data.store_data.push(noteIns);
     this.setData({
       notes : this.data.store_data,
@@ -88,6 +113,9 @@ Page({
       })
       return
     }
+    this.saveNotes()
+  },
+  saveNotes() {
     wx.request({
       url: 'https://m.dannyhkk.cn:8088/helloservice/savenotes', //仅为示例，并非真实的接口地址
       data: {
@@ -156,7 +184,6 @@ Page({
       },
       method: 'POST',
       success (res) {
-        console.log("get notes result: " + res.data)
         if (res.data.Head.code === 0) {
           let tmp_notes = JSON.parse(res.data.notes)
           that.setData({

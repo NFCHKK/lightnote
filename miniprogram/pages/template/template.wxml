@@ -2,15 +2,8 @@
   <view class="show_notes">
     <view wx:for="{{notes}}" wx:key="unique" wx:for-item="item" wx:for-index="index">
       <view class="usernotes">
-        <movable-area>
-          <movable-view direction="horizontal" inertia="{{true}}" out-of-bounds="{{true}}" friction="150">
-              <view style="font-size: small; font-weight: lighter;text-align: right;">{{item.time}}</view>
-              <textarea disabled="true" auto-height="true" value="{{item.note}}"></textarea>
-          </movable-view>
-        </movable-area>
-        <view class="notedelete">
-          <button>删除</button>
-        </view>
+        <view style="font-size: small; font-weight: lighter;text-align: right;">{{item.time}}</view>
+        <textarea disabled="true" auto-height="true" value="{{item.note}}"></textarea>
       </view>
     </view>
   </view>

@@ -22,7 +22,7 @@
       </view>
       <view class="edit_ele">
         <button bindtap="onAllNotes">所有</button>
-        <button bindtap="onAllDelete">已删</button>
+        <!--button bindtap="onAllDelete">已删</button-->
       </view>
     </view>
     <view class="show_notes">
@@ -35,7 +35,7 @@
           </movable-view>
         </movable-area>
         <view class="notedelete">
-          <button>删除</button>
+          <button bindtap="deleteNote" id="{{item.id}}">删除</button>
         </view>
       </view>
     </view>
