@@ -1,0 +1,23 @@
+.avatar-wrapper {
+  padding: 0;
+  width: 112rpx !important;
+  border-radius: 8rpx;
+  margin-top: 40rpx;
+  margin-bottom: 40rpx;
+  background-color: rgb(200, 207, 209);
+}
+
+.avatar {
+  display: block;
+  width: 112rpx;
+  height: 112rpx;
+}
+
+.container {
+  display: flex;
+}
+
+.confirm {
+  margin-top: 100rpx;
+  background-color: rgb(192, 140, 71);
+}

@@ -151,6 +151,15 @@ Page({
     })*/
   },
   onLoad() {
+    if (this.options.avatarUrl != undefined) {
+      this.setData({
+        userInfo: {
+          avatarUrl: this.options.avatarUrl,
+          nickName: this.options.nickName
+        },
+        hasUserInfo: true
+      })
+    }
     wx.getStorage({
       key: "open_id",
       success: (res)=>{
@@ -158,9 +167,10 @@ Page({
         this.setData({
           openId: res.data
         })
+        this.getUserNotes()
       },
       fail: (res)=>{
-        console.log("get store open_id failed: " + res.errMsg)
+        this.getUserOpenIdAndNotes()
       }
     })
     // @ts-ignore
@@ -170,49 +180,7 @@ Page({
       })
     }
   },
-  getUserNotes() {
-    let that = this
-    wx.request({
-      url: 'https://m.dannyhkk.cn:8088/helloservice/getnotes', //仅为示例，并非真实的接口地址
-      data: {
-        "head": {
-          "id": that.data.openId,
-        },
-      },
-      header: {
-        'content-type': 'application/json' // 默认值
-      },
-      method: 'POST',
-      success (res) {
-        if (res.data.Head.code === 0) {
-          let tmp_notes = JSON.parse(res.data.notes)
-          that.setData({
-            notes: tmp_notes,
-            x: new Array(tmp_notes.length).fill(0)
-          })
-          that.data.store_data = that.data.notes
-        }
-      }
-    })
-  },
-  getUserProfile() {
-    // 推荐使用wx.getUserProfile获取用户信息，开发者每次通过该接口获取用户个人信息均需用户确认，开发者妥善保管用户快速填写的头像昵称，避免重复弹窗
-    let that = this
-    wx.getUserProfile({
-      desc: '用于拉取用户日志', // 声明获取用户个人信息后的用途，后续会展示在弹窗中，请谨慎填写
-      success: (res) => {
-        console.log(res.userInfo)
-        that.setData({
-          userInfo: res.userInfo,
-          hasUserInfo: true
-        })
-      }
-    })
-    console.log("user open id: " + this.data.openId)
-    if (this.data.openId != "") {
-      this.getUserNotes()
-      return
-    }
+  getUserOpenIdAndNotes() {
     wx.login({
       success:(res) => {
         console.log(res.code)
@@ -247,6 +215,77 @@ Page({
       },
       fail: (res) => {
         console.log(res.errMsg)
+      }
+    })
+  },
+  getUserNotes() {
+    let that = this
+    wx.request({
+      url: 'https://m.dannyhkk.cn:8088/helloservice/getnotes', //仅为示例，并非真实的接口地址
+      data: {
+        "head": {
+          "id": that.data.openId,
+        },
+      },
+      header: {
+        'content-type': 'application/json' // 默认值
+      },
+      method: 'POST',
+      success (res) {
+        if (res.data.Head.code === 0) {
+          let tmp_notes = JSON.parse(res.data.notes)
+          that.setData({
+            notes: tmp_notes,
+            x: new Array(tmp_notes.length).fill(0)
+          })
+          that.data.store_data = that.data.notes
+        }
+      }
+    })
+  },
+ compareVersion(v1, v2) {
+    v1 = v1.split('.')
+    v2 = v2.split('.')
+    const len = Math.max(v1.length, v2.length)
+  
+    while (v1.length < len) {
+      v1.push('0')
+    }
+    while (v2.length < len) {
+      v2.push('0')
+    }
+  
+    for (let i = 0; i < len; i++) {
+      const num1 = parseInt(v1[i])
+      const num2 = parseInt(v2[i])
+  
+      if (num1 > num2) {
+        return 1
+      } else if (num1 < num2) {
+        return -1
+      }
+    }
+    return 0
+  },
+
+  getUserProfile() {
+    const version = wx.getSystemInfoSync().SDKVersion
+    if (this.compareVersion(version, '2.21.2') >= 0) {
+      wx.navigateTo({
+        url: "../userprofile/userprofile"
+      })
+      return
+    }
+    // 推荐使用wx.getUserProfile获取用户信息，开发者每次通过该接口获取用户个人信息均需用户确认，开发者妥善保管用户快速填写的头像昵称，避免重复弹窗
+    let that = this
+    wx.getUserProfile({
+      desc: '用于拉取用户日志', // 声明获取用户个人信息后的用途，后续会展示在弹窗中，请谨慎填写
+      success: (res) => {
+        console.log(res.userInfo)
+        that.setData({
+          userInfo: res.userInfo,
+          hasUserInfo: true
+        })
       }
     })
   },

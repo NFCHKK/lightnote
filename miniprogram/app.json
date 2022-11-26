@@ -3,7 +3,8 @@
     "pages/index/index",
     "pages/logs/logs",
     "pages/notes/notes",
-    "pages/mindmap/mind"
+    "pages/mindmap/mind",
+    "pages/userprofile/userprofile"
   ],
   "window": {
     "backgroundTextStyle": "light",

@@ -1,0 +1,9 @@
+<!--pages/userprofile.wxml-->
+<view class="container">
+  <button class="avatar-wrapper" open-type="chooseAvatar" bind:chooseavatar="onChooseAvatar">
+    <image class="avatar" src="{{avatarUrl}}"></image>
+  </button> 
+  <input type="nickname" class="weui-input" placeholder="请输入昵称" bindblur="onInputNickName"/>
+  <button class="confirm" bindtap="onConfirm">确定</button>
+</view>
+
