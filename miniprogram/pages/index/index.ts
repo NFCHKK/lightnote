@@ -167,10 +167,14 @@ Page({
         this.setData({
           openId: res.data
         })
-        this.getUserNotes()
+        if (this.data.hasUserInfo) {
+          this.getUserNotes()
+        }
       },
-      fail: (res)=>{
-        this.getUserOpenIdAndNotes()
+      fail: (res)=> {
+        if (this.data.hasUserInfo) {
+          this.getUserOpenIdAndNotes()
+        }
       }
     })
     // @ts-ignore
@@ -181,6 +185,7 @@ Page({
     }
   },
   getUserOpenIdAndNotes() {
+    let that = this
     wx.login({
       success:(res) => {
         console.log(res.code)
