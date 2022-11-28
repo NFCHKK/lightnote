@@ -1,4 +1,5 @@
 // pages/notes/notes.ts
+var log = require("../logs/logs.js")
 Page({
 
   /**
@@ -13,6 +14,7 @@ Page({
    * Lifecycle function--Called when page load
    */
   onLoad(option) {
+    log.info("hello notes")
     this.data.openid = option.openid
     console.log(this.data.openid)
     if (this.data.openid != "") {
@@ -30,11 +32,16 @@ Page({
         method: 'POST',
         success (res) {
           console.log(res.data)
+          log.info("get notes success")
           if (res.data.Head.code === 0) {
             that.setData({
               notes: JSON.parse(res.data.notes)
             })
           }
+        },
+        fail (res) {
+          console.log("get notes failed: " + res.errMsg)
+          log.error("get notes failed: " + res.errMsg)
         }
       })
     }

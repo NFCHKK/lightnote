@@ -35,6 +35,20 @@ Page({
       })
   },
   onConfirm() {
+    const info = {
+      userInfo: {
+        avatarUrl: this.data.avatarUrl,
+        nickName: this.data.nickName,
+      },
+      tm: Date.now()/1000
+    }
+    try {
+      let value = JSON.stringify(info)
+      console.log("user info: " + value)
+      wx.setStorageSync("avatar", value)
+    } catch(error) {
+      console.log("store user info error")
+    }
     wx.navigateTo({
       url: "../index/index?avatarUrl=" + this.data.avatarUrl +"&nickName=" + this.data.nickName
     })

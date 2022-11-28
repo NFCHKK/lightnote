@@ -1,7 +1,8 @@
 // index.ts
 // 获取应用实例
-
+var log = require("../logs/logs.js")
 const app = getApp<IAppOption>()
+const tm_duration = 3600 * 24 * 7
 Page({
   data: {
     userinput: "",
@@ -116,6 +117,7 @@ Page({
     this.saveNotes()
   },
   saveNotes() {
+    let that = this
     wx.request({
       url: 'https://m.dannyhkk.cn:8088/helloservice/savenotes', //仅为示例，并非真实的接口地址
       data: {
@@ -129,7 +131,8 @@ Page({
       },
       method: 'POST',
       success (res) {
-        console.log(res.data)
+        console.log("left note: " + that.data.notes.length)
+        console.log("save success: " + res.data)
       }
     })
   },
@@ -150,8 +153,37 @@ Page({
       url: '../notes/notes',
     })*/
   },
+  checkUserAvatar() {
+    try {
+      let value = wx.getStorageSync("avatar")
+      console.log(String(value))
+      const result = JSON.parse(value)
+      let tm = Date.now()/1000
+      if (tm - result.tm > tm_duration) {
+        console.log("user avatar expired")
+        log.warn("user avatar expired")
+        return
+      }
+      console.log("get user avatar success: " + result.userInfo)
+      this.setData({
+        userInfo: {
+          avatarUrl: result.userInfo.avatarUrl,
+          nickName: result.userInfo.nickName
+        },
+        hasUserInfo: true
+      })
+    } catch (error) {
+      console.log("check user avatar failed: " + error)
+    }
+  },
   onLoad() {
-    if (this.options.avatarUrl != undefined) {
+    this.checkUserAvatar()
+    if (wx.getUserProfile) {
+      this.setData({
+        canIUseGetUserProfile: true
+      })
+    }
+    /*if (this.options.avatarUrl != undefined) {
       this.setData({
         userInfo: {
           avatarUrl: this.options.avatarUrl,
@@ -159,30 +191,40 @@ Page({
         },
         hasUserInfo: true
       })
+    }*/
+    if (!this.data.hasUserInfo) {
+      return
     }
     wx.getStorage({
       key: "open_id",
       success: (res)=>{
-        console.log("get store open_id success: " + res.data)
-        this.setData({
-          openId: res.data
-        })
-        if (this.data.hasUserInfo) {
+        let open_id = ""
+        try {
+          const result = JSON.parse(res.data)
+          let store_time = result.tm
+          let tm = Date.now()/1000
+          if (tm - store_time <= tm_duration) {
+            open_id = result.id
+          }
+        } catch(error) {
+          console.log("parse user open id error: " + error)
+          log.error("parse user open id error: " + error)
+          
+        }
+        if (open_id != "") {
+          this.setData({
+            openId: open_id
+          })
           this.getUserNotes()
+        } else {
+          this.getUserOpenIdAndNotes()
         }
       },
       fail: (res)=> {
-        if (this.data.hasUserInfo) {
-          this.getUserOpenIdAndNotes()
-        }
+        log.error("get user open_id error: " + res.errMsg)
+        this.getUserOpenIdAndNotes()
       }
     })
-    // @ts-ignore
-    if (wx.getUserProfile) {
-      this.setData({
-        canIUseGetUserProfile: true
-      })
-    }
   },
   getUserOpenIdAndNotes() {
     let that = this
@@ -200,14 +242,19 @@ Page({
           method: 'POST',
           success (res) {
             console.log("miniauth result: " + res.data)
+            log.info("miniauth result: " + res.data)
             const result = JSON.parse(res.data.loginCode)
             if (res.data.head.code === 0) {
               that.setData({
                 openId: result.openid
               })
+              const id_store = {
+                id: that.data.openId,
+                tm: Date.now()/1000
+              }
               wx.setStorage({
                 key: "open_id",
-                data: that.data.openId,
+                data: JSON.stringify(id_store),
                 success: ()=>{
                   console.log("save openid success")
                 }
@@ -220,6 +267,7 @@ Page({
       },
       fail: (res) => {
         console.log(res.errMsg)
+        log.error("user miniauth failed, " + res.errMsg)
       }
     })
   },
@@ -237,6 +285,7 @@ Page({
       },
       method: 'POST',
       success (res) {
+        log.info("get user notes: " + res)
         if (res.data.Head.code === 0) {
           let tmp_notes = JSON.parse(res.data.notes)
           that.setData({
@@ -244,8 +293,10 @@ Page({
             x: new Array(tmp_notes.length).fill(0)
           })
           that.data.store_data = that.data.notes
+        } else {
+          log.error("get user notes failed: " + res)
         }
-      }
+      },
     })
   },
  compareVersion(v1, v2) {

@@ -24,7 +24,7 @@
   },
   "include": [
     "./**/*.ts"
-, "miniprogram/pages/mindmap/data.js"  ],
+, "miniprogram/pages/mindmap/data.js", "miniprogram/pages/logs/logs.js"  ],
   "exclude": [
     "node_modules"
   ]
