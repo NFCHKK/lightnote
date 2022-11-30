@@ -74,6 +74,7 @@ Page({
   
     this.setData({
       notes: new_notes,
+      store_data: new_notes,
       x: new_x
     })
     this.saveNotes()
@@ -81,8 +82,8 @@ Page({
 
   getlocalDate() {
     let timeNow = new Date()
-    return timeNow.getFullYear() + "/" + timeNow.getMonth() + "/" +
-      timeNow.getDay() + " " + timeNow.getHours() + ":" + timeNow.getMinutes() + ":"
+    return timeNow.getFullYear() + "/" + (timeNow.getMonth() + 1) + "/" +
+      timeNow.getDate() + " " + timeNow.getHours() + ":" + timeNow.getMinutes() + ":"
       + timeNow.getSeconds()
   },
 
@@ -132,7 +133,8 @@ Page({
       method: 'POST',
       success (res) {
         console.log("left note: " + that.data.notes.length)
-        console.log("save success: " + res.data)
+        console.log("save success: ")
+        console.log(res.data)
       }
     })
   },
@@ -266,8 +268,8 @@ Page({
         })
       },
       fail: (res) => {
-        console.log(res.errMsg)
-        log.error("user miniauth failed, " + res.errMsg)
+        console.log("wx.login failed: "+ res.errMsg)
+        log.error("wx.login failed, " + res.errMsg)
       }
     })
   },
