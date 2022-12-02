@@ -375,4 +375,15 @@ Page({
   onUnload() {
 
   },
+  onShareAppMessage() {
+    return {
+      title: "我的轻笔记",
+      path: "/pages/index/index"
+    }
+  },
+  onShareTimeline() {
+    return {
+      title: "欢迎使用轻笔记"
+    }
+  }
 })
